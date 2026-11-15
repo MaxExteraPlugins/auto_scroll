@@ -4,7 +4,7 @@ __description__ = "Автоматическая прокрутка сообще�
 __author__ = "@itNotMax - @MaxExteraPlugins"
 __icon__ = "MaxExteraPluginsStickers/17"
 __version__ = "1.2.0"
-__min_version__ = "12.5.1"
+__min_version__ = "12.10.6"
 __app_version__ = ">=12.5.1"
 __sdk_version__ = ">=1.4.3.3"
 
@@ -49,6 +49,10 @@ BOTTOM_PAUSE_TICKS = 30
 WATCHER_INTERVAL = 500
 
 
+
+# ============================================================
+# MaxExteraPlugins Shared Author & Channel Subscription Module
+# ============================================================
 
 # ============================================================
 # MaxExteraPlugins Shared Author & Channel Subscription Module
@@ -695,7 +699,16 @@ class AutoScrollPlugin(BasePlugin):
         except Exception:
             pass
 
-    def create_settings(self) -> List[Any]:
+    def create_settings(self):
+        try:
+            items = self._inner_create_settings()
+        except Exception:
+            items = []
+        if hasattr(self, '_author_helper'):
+            return self._author_helper.prepend_settings(items)
+        return items
+
+    def _inner_create_settings(self):
         return [
             Header(text="Информация"),
             Text(
